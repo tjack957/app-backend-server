@@ -66,7 +66,7 @@ router.post('/', (req, res) => {
                     success: true,
                     email: result.rows[0].email
                 })
-                sendEmail("uwnetid@uw.edu", email, "Welcome!", '<a href='+s+'>Click here to Verify</a>');
+                sendEmail("uwnetid@uw.edu", email, "Welcome!", "hello");
             })
             .catch((err) => {
                 //log the error
