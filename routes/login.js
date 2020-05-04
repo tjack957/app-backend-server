@@ -60,8 +60,8 @@ router.get('/', (request, response) => {
                 let salt = result.rows[0].salt
                 //Retrieve our copy of the password
                 let ourSaltedHash = result.rows[0].password 
-                //CHECK VERIFICATION
-                let verification = retult.rows[0].verification
+                //CHECK VERIFICATION NEW CODE
+                let verification = result.rows[0].verification
                 //Combined their password with our salt, then hash
                 let theirSaltedHash = getHash(theirPw, salt)
                 //&& VERIFICATION === 1 IS NEW CODE
