@@ -40,7 +40,6 @@ router.use(bodyParser.json())
  */ 
 router.post('/', (req, res) => {
     res.type("application/json")
-
     //Retrieve data from query params
     var first = req.body.first
     var last = req.body.last
@@ -67,7 +66,7 @@ router.post('/', (req, res) => {
                     success: true,
                     email: result.rows[0].email
                 })
-                sendEmail("uwnetid@uw.edu", email, "Welcome!", "<strong>Welcome to our app!</strong>");
+                sendEmail("uwnetid@uw.edu", email, "Welcome!", '<a href='+s+'>Click here to Verify</a>');
             })
             .catch((err) => {
                 //log the error

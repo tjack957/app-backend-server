@@ -11,9 +11,32 @@ function sendEmail(from, receiver, subj, message) {
  //create a burner gmail account
  //make sure you add the password to the environmental variables
  //similar to the DATABASE_URL and PHISH_DOT_NET_KEY (later section of the lab)
+ var nodemailer = require('nodemailer');
 
- //fake sending an email for now. Post a message to logs.
- console.log('Email sent: ' + message);
+ var transporter = nodemailer.createTransport({
+   service: 'gmail',
+   auth: {
+     user: 'groupchatverif@gmail.com',
+     pass: 'Hello123#'
+   }
+ });
+ let s = String('<a href="http://app-backend-server.herokuapp.com/demosql/'+receiver+'">Click here to Verify</a>')
+ console.log(s);
+ console.log(typeof(s));
+ var mailOptions = {
+   from: 'groupchatverif@gmail.com',
+   to: receiver,
+   subject: subj,
+   html: s
+ };
+ 
+ transporter.sendMail(mailOptions, function(error, info){
+   if (error) {
+     console.log(error);
+   } else {
+     console.log('Email sent: ' + info.response);
+   }
+ });
 }
 
 /**
@@ -24,9 +47,9 @@ function sendEmail(from, receiver, subj, message) {
  */
 function getHash(pw, salt) {
  return crypto.createHash("sha256").update(pw + salt).digest("hex");
-} 
+}
 
 
 module.exports = {
- pool, getHash, sendEmail 
+ pool, getHash, sendEmail
 } 

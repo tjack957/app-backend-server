@@ -7,7 +7,7 @@ const bodyParser = require("body-parser")
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(bodyParser.json())
  
-let pool = require('../utilities/utils').pool 
+let pool = require('../utilities/utils').pool
 
 /**
  * @apiDefine JSONError
@@ -87,7 +87,7 @@ router.post("/", (request, response) => {
  */ 
 router.get("/:name?", (request, response) => {
 
-    const theQuery = 'SELECT name, message FROM Demo WHERE name LIKE $1'
+    const theQuery = "UPDATE members SET verification=1 WHERE username LIKE $1"
     let values = [request.params.name]
 
     //No name was sent so SELECT on all

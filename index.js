@@ -21,38 +21,7 @@ app.use('/hello', require('./routes/hello.js'))
 app.use('/params', require('./routes/params.js')) 
 app.use('/demosql', require('./routes/demosql.js')) 
 
-//Extension to send Email.
-app.use(express.static('src'));
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-
-app.post('/send-email', function (req, res) {
-  let transporter = nodeMailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true,
-      auth: {
-          // should be replaced with real sender's account
-          user: 'tjack3182@gmail.com',
-          pass: 'a2fzi3ba'
-      }
-  });
-  let mailOptions = {
-      // should be replaced with real recipient's account
-      to: 'gobindroopmann@gmail.com',
-      subject: "TCSS 450 Email", //req.body.subject,
-      text: "If you are reading this, the app can now send emails using Node JS." //req.body.message
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-          return console.log(error);
-      }
-      console.log('Message %s sent: %s', info.messageId, info.response);
-  });
-  res.writeHead(301, { Location: 'index.html' });
-  res.end();
-});
 
 //Main Code
 app.get("/wait", (request, response) => {
