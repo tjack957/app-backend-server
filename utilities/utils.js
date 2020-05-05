@@ -20,14 +20,12 @@ function sendEmail(from, receiver, subj, message) {
      pass: process.env.PASSWORD
    }
  });
- let s = String('<a href="http://app-backend-server.herokuapp.com/demosql/'+receiver+'">Click here to Verify</a>')
- console.log(s);
- console.log(typeof(s));
+ let verifyString = String('<a href="http://app-backend-server.herokuapp.com/verify/'+receiver+'">Click here to Verify</a>')
  var mailOptions = {
    from: 'groupchatverif@gmail.com',
    to: receiver,
    subject: subj,
-   html: s
+   html: verifyString
  };
  
  transporter.sendMail(mailOptions, function(error, info){
