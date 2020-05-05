@@ -18,8 +18,6 @@ function sendEmail(from, receiver, subj, message) {
    auth: {
      user: process.env.HOST,
      pass: process.env.PASSWORD
-     //user: 'groupchatverif@gmail.com',
-     //pass: 'Hello123#'
    }
  });
  let s = String('<a href="http://app-backend-server.herokuapp.com/demosql/'+receiver+'">Click here to Verify</a>')
