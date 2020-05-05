@@ -1,7 +1,7 @@
 {
-  "name": "450-lab",
+  "name": "Mobile App",
   "version": "1.0.0",
-  "description": "TCSS 450 Lab for creating a webservice",
+  "description": "Mobile App WIP for TCSS450",
   "main": "index.js",
   "scripts": {
     "test": "index.js"
