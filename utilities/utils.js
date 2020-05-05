@@ -16,8 +16,10 @@ function sendEmail(from, receiver, subj, message) {
  var transporter = nodemailer.createTransport({
    service: 'gmail',
    auth: {
-     user: 'groupchatverif@gmail.com',
-     pass: 'Hello123#'
+     user: process.env.Host,
+     pass: process.env.Password
+     //user: 'groupchatverif@gmail.com',
+     //pass: 'Hello123#'
    }
  });
  let s = String('<a href="http://app-backend-server.herokuapp.com/demosql/'+receiver+'">Click here to Verify</a>')
