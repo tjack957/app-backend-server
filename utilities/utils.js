@@ -16,8 +16,8 @@ function sendEmail(from, receiver, subj, message) {
  var transporter = nodemailer.createTransport({
    service: 'gmail',
    auth: {
-     user: process.env.Host,
-     pass: process.env.Password
+     user: process.env.HOST,
+     pass: process.env.PASSWORD
      //user: 'groupchatverif@gmail.com',
      //pass: 'Hello123#'
    }
