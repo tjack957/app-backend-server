@@ -25,7 +25,7 @@ let pool = require('../utilities/utils').pool
 
  * @apiError (400: SQL Error) {String} message the reported SQL error details
  * 
- * @apiUse JSONError
+ * 
  */ 
 router.get("/:name?", (request, response) => {
 
