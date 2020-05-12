@@ -67,7 +67,9 @@ router.get("/:token?",(req, res, next) => {
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                response.sendFile('routes/Verified.html', {root: __dirname})
+                response.send({
+                    message: "Verified"
+                })
             } else {
                 response.status(404).send({
                     message: "Name not found"
