@@ -8,6 +8,11 @@ const bodyParser = require("body-parser")
 router.use(bodyParser.json())
  
 let pool = require('../utilities/utils').pool
+let jwt = require('jsonwebtoken');
+let config = {
+    secret: process.env.JSON_WEB_TOKEN
+};
+
 
 /**
  * @api {get} /verify/:name? Request to verify all demo entries in the DB
@@ -27,14 +32,37 @@ let pool = require('../utilities/utils').pool
  * 
  * 
  */ 
-router.get("/:name?", (request, response) => {
-
-    const theQuery = "UPDATE members SET verification=1 WHERE username LIKE $1"
-    let values = [request.params.name]
-
-    //No name was sent so SELECT on all
-    if(!request.params.name)
-        values = ["%"]
+router.get("/:token?",(req, res, next) => {
+    let token = req.params.token
+    console.log(req.params)
+    console.log("*******************************************")
+    if (token) {
+      if (token.startsWith('Bearer ')) {
+          // Remove Bearer from string
+          token = token.slice(7, token.length);
+      }
+  
+      jwt.verify(token, config.secret, (err, decoded) => {
+        if (err) {
+          return res.status(403).json({
+            success: false,
+            message: 'Token is not valid'
+          });
+        } else {
+          req.decoded = decoded;
+          next();
+        }
+      });
+    } else {
+      return res.status(401).json({
+        success: false,
+        message: 'Auth token is not supplied'
+      });
+    }
+  }, (request, response) => {
+    console.log(request.params);
+    const theQuery = "UPDATE members SET verification=1 WHERE email=$1"
+    let values = [request.decoded.email]
 
     pool.query(theQuery, values)
         .then(result => {

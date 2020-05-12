@@ -20,7 +20,7 @@ function sendEmail(from, receiver, subj, message) {
      pass: process.env.PASSWORD
    }
  });
- let verifyString = String('<a href="http://app-backend-server.herokuapp.com/verify/'+receiver+'">Click here to Verify</a>')
+ let verifyString = String('<a href="http://app-backend-server.herokuapp.com/verify/'+message+'">Click here to Verify</a>')
  var mailOptions = {
    from: 'groupchatverif@gmail.com',
    to: receiver,

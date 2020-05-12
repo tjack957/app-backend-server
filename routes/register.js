@@ -16,7 +16,10 @@ var router = express.Router()
 const bodyParser = require("body-parser")
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(bodyParser.json())
-
+let jwt = require('jsonwebtoken')
+let config = {
+    secret: process.env.JSON_WEB_TOKEN
+}
 /**
  * @api {post} /register Request to resgister a user
  * @apiName PostAuth
@@ -66,7 +69,17 @@ router.post('/', (req, res) => {
                     success: true,
                     email: result.rows[0].email
                 })
-                sendEmail("uwnetid@uw.edu", email, "Welcome!", "hello");
+                let token = jwt.sign(
+                    {
+                        "email": email,
+                        memberid: result.rows[0].memberid
+                    },
+                    config.secret,
+                    { 
+                        expiresIn: '14 days' // expires in 24 hours
+                    }
+                )
+                sendEmail("uwnetid@uw.edu", email, "Welcome!", token);
             })
             .catch((err) => {
                 //log the error
