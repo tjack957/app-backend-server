@@ -1,6 +1,5 @@
 //express is the framework we're going to use to handle requests
 const express = require('express')
-include Verified.hmtl
 var router = express.Router()
 
 const bodyParser = require("body-parser")
@@ -67,7 +66,9 @@ router.get("/:token?",(req, res, next) => {
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                response.sendFile('Verified.html')
+                response.send({
+                    message: "Verified"
+                })
             } else {
                 response.status(404).send({
                     message: "Name not found"
