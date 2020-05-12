@@ -68,8 +68,7 @@ router.get("/:token?",(req, res, next) => {
         .then(result => {
             if (result.rowCount > 0) {
                 response.send({
-                    success: true,
-                    names: result.rows
+                    message: "Your account has been verified you may close this tab"
                 })
             } else {
                 response.status(404).send({
