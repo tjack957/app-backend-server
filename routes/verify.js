@@ -1,5 +1,6 @@
 //express is the framework we're going to use to handle requests
 const express = require('express')
+
 var router = express.Router()
 
 const bodyParser = require("body-parser")
@@ -26,7 +27,6 @@ let config = {
  * @apiSuccess {String} names.message The message asscociated with the name
  * 
  * @apiError (404: Name Not Found) {String} message "Name not found"
-
  * @apiError (400: SQL Error) {String} message the reported SQL error details
  * 
  * 
