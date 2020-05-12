@@ -13,6 +13,7 @@ app.use(bodyParser.json())
 app.use('/auth', require('./routes/login.js')) 
 app.use('/auth', require('./routes/register.js')) 
 app.use('/verify', require('./routes/verify.js')) 
+app.use('/weather', middleware.checkToken, require('./routes/weather.js'))
 
 /*
  * This middleware function will respond to inproperly formed JSON in 
