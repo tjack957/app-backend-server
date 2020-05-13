@@ -51,12 +51,15 @@ router.get('/', (request, response) => {
         let values = [email]
         pool.query(theQuery, values)
             .then(result => { 
+                console.log("result 1")
+                console.log(result)
                 if (result.rowCount == 0) {
                     response.status(404).send({
                         message: 'User not found' 
                     })
                     return
                 }
+                console.log("result 2")
                 let salt = result.rows[0].salt
                 //Retrieve our copy of the password
                 let ourSaltedHash = result.rows[0].password 
@@ -67,6 +70,7 @@ router.get('/', (request, response) => {
                 //&& VERIFICATION === 1 IS NEW CODE
                 //Did our salted hash match their salted hash?
                 if (ourSaltedHash === theirSaltedHash && verification === 1) {
+                    console.log("result 3")
                     //credentials match. get a new JWT
                     let token = jwt.sign({username: email},
                         {
@@ -78,6 +82,7 @@ router.get('/', (request, response) => {
                             expiresIn: '14 days' // expires in 14 days
                         }
                     )
+                    console.log("result 4")
                     //package and send the results
                     response.json({
                         success: true,
@@ -85,6 +90,7 @@ router.get('/', (request, response) => {
                         token: token
                     })
                 } else {
+                    console.log("result no match")
                     //credentials dod not match
                     response.status(400).send({
                         message: 'Credentials did not match' 
@@ -94,7 +100,7 @@ router.get('/', (request, response) => {
             .catch((err) => {
                 //log the error
                 //console.log(err.stack)
-                console.log("Error in SQL")
+                console.log("Error catch")
                 console.log(err)
                 response.status(400).send({
                     message: err.detail
