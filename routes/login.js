@@ -62,17 +62,27 @@ router.get('/', (request, response) => {
                 console.log("result 2")
                 let salt = result.rows[0].salt
                 //Retrieve our copy of the password
+
                 let ourSaltedHash = result.rows[0].password 
                 //CHECK VERIFICATION NEW CODE
+                console.log(ourSaltedHash)
                 let verification = result.rows[0].verification
                 //Combined their password with our salt, then hash
+                console.log(verification)
                 let theirSaltedHash = getHash(theirPw, salt)
                 //&& VERIFICATION === 1 IS NEW CODE
                 //Did our salted hash match their salted hash?
+                if(ourSaltedHash === theirSaltedHash){
+                    console.log("salt match")
+                }
+
+                if(verification === 1){
+                    console.log("verified user")
+                }
                 if (ourSaltedHash === theirSaltedHash && verification === 1) {
                     console.log("result 3")
                     //credentials match. get a new JWT
-                    let token = jwt.sign({username: email},
+                    let token = jwt.sign(
                         {
                             "email": email,
                            memberid: result.rows[0].memberid
