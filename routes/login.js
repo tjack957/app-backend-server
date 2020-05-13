@@ -94,6 +94,8 @@ router.get('/', (request, response) => {
             .catch((err) => {
                 //log the error
                 //console.log(err.stack)
+                console.log("Error in SQL")
+                console.log(err)
                 response.status(400).send({
                     message: err.detail
                 })
