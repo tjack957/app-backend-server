@@ -94,7 +94,7 @@ router.get('/', (request, response) => {
             .catch((err) => {
                 //log the error
                 //console.log(err.stack)
-                res.status(400).send({
+                response.status(400).send({
                     message: err.detail
                 })
             })
