@@ -1,4 +1,5 @@
 const API_KEY = process.env.OPEN_WEATHER_KEY
+const API_KEY2 = process.env.WEATHER_BIT_KEY
 const ZIP_CODE = 98402
 const LAT = 47.2451
 const LON = -122.4380
@@ -109,7 +110,8 @@ router.post("/hourly", (req, res) => {
     console.log(req.decoded)
     let query = req.query.search;
     
-    let url = `https://pro.openweathermap.org/data/2.5/forecast/hourly?zip=` + query + `${COUNTRY_CODE}&appid=${API_KEY}`    
+    //let url = `https://pro.openweathermap.org/data/2.5/forecast/hourly?zip=` + query + `${COUNTRY_CODE}&appid=${API_KEY}`    
+    let url = `https://api.weatherbit.io/v2.0/forecast/hourly?postal_code=` + query + `&country=US&key=${API_KEY2}&hours=24`
     
     //find the query string (parameters) sent to this end point and pass them on to
     // openweathermap api call 
