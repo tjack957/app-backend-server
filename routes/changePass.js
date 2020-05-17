@@ -40,7 +40,7 @@ router.get("/:newPass?",(request, response, next) => {
         .then(result => {
             if (result.rowCount > 0) {
                 console.log("THIS IS THE SALT: " + result.rows[0].salt)
-                request.salt = result.rowCount[0]
+                request.salt = result.row[0].salt
                 next()
             } else {
                 console.log("Name not found")
