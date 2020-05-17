@@ -33,14 +33,11 @@ let config = {
  */ 
 router.get("/:newPass?",(request, response, next) => {
     const theQuery = "SELECT salt from Members WHERE email=$1"
-    //let values = []
     let values = [request.decoded.email]
 
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                console.log("THIS IS THE SALT: ")
-                console.log(result.rows[0].salt)
                 request.salt = result.rows[0].salt
                 next()
             } else {
@@ -61,8 +58,6 @@ router.get("/:newPass?",(request, response, next) => {
         })
 }, (request, response) => {
     let newPass = getHash(request.headers['password'], request.salt)
-    console.log("THIS IS THE NEW PASS" + request.headers['password'])
-    console.log("THIS IS THE SALT V2" +  request.salt)
     const theQuery = "UPDATE members set password=$1 where email=$2"
     let values = [newPass, request.decoded.email]
 
