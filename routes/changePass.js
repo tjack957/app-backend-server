@@ -52,8 +52,9 @@ router.get("/:newPass?",(request, response, next) => {
             //log the error
             console.log(values)
             console.log(theQuery)
+            console.log(err.stack)
             response.status(400).send({
-                message: err.detail
+                message: err.stack
             })
         })
 }, (request, response) => {
