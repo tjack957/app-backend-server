@@ -50,7 +50,7 @@ router.get("/:newPass?",(request, response, next) => {
         })
         .catch(err => {
             //log the error
-            console.log(err.details)
+            console.log("Error with the query " + request.decoded.email)
             response.status(400).send({
                 message: err.detail
             })
