@@ -39,7 +39,7 @@ router.get("/:newPass?",(request, response, next) => {
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                console.log("THIS IS THE SALT: " + result.rows[0].salt)
+                console.log("THIS IS THE SALT: " + result)
                 request.salt = result.row[0].salt
                 next()
             } else {
