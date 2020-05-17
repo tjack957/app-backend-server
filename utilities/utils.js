@@ -5,12 +5,6 @@ let pool = require('./sql_conn.js')
 const crypto = require("crypto");
 
 function sendEmail(from, receiver, subj, message) {
- //research nodemailer for sending email from node.
- // https://nodemailer.com/about/
- // https://www.w3schools.com/nodejs/nodejs_email.asp
- //create a burner gmail account
- //make sure you add the password to the environmental variables
- //similar to the DATABASE_URL and PHISH_DOT_NET_KEY (later section of the lab)
  var nodemailer = require('nodemailer');
 
  var transporter = nodemailer.createTransport({
@@ -37,6 +31,60 @@ function sendEmail(from, receiver, subj, message) {
  });
 }
 
+function sendEmail2(from, receiver, subj, message) {
+  var nodemailer = require('nodemailer');
+ 
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.HOST,
+      pass: process.env.PASSWORD
+    }
+  });
+  let verifyString = String('<a href="http://app-backend-server.herokuapp.com/reset/'+message+'">Click here to reset your password</a>')
+  var mailOptions = {
+    from: 'groupchatverif@gmail.com',
+    to: receiver,
+    subject: subj,
+    html: verifyString
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+ }
+
+ function sendEmail3(from, receiver, subj, message) {
+  var nodemailer = require('nodemailer');
+ 
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.HOST,
+      pass: process.env.PASSWORD
+    }
+  });
+  let verifyString = String('Your password has been reset, your temporary password is:')
+  var mailOptions = {
+    from: 'groupchatverif@gmail.com',
+    to: receiver,
+    subject: subj,
+    html: verifyString
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+ }
+
 /**
  * Method to get a salted hash.
  * We put this in its own method to keep consistency
@@ -49,5 +97,5 @@ function getHash(pw, salt) {
 
 let messaging = require('./pushy_utilities.js')
 module.exports = {
- pool, getHash, sendEmail, messaging
+ pool, getHash, sendEmail, sendEmail2, messaging
 } 
