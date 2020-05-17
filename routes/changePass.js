@@ -33,7 +33,7 @@ let config = {
  */ 
 router.get("/:newPass?",(request, response, next) => {
     const theQuery = "SELECT salt from members WHERE email=$1"
-    let values = [request.decoded.email]
+    let values = [request.params.newPass]
 
     pool.query(theQuery, values)
         .then(result => {
@@ -50,7 +50,7 @@ router.get("/:newPass?",(request, response, next) => {
         })
         .catch(err => {
             //log the error
-            console.log("Error with the query " + request.decoded.email)
+            console.log("Error with the query " + request.params.newPass)
             response.status(400).send({
                 message: err.detail
             })
@@ -60,7 +60,7 @@ router.get("/:newPass?",(request, response, next) => {
     console.log("THIS IS THE NEW PASS" + request.headers['password'])
     console.log("THIS IS THE SALT V2" +  request.salt)
     const theQuery = "UPDATE members set password=$1 where email=$2"
-    let values = [newPass, request.decoded.email]
+    let values = [newPass, request.params.newPass]
 
     pool.query(theQuery, values)
         .then(result => {
