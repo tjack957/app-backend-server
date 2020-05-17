@@ -1,5 +1,4 @@
 var Pushy = require('pushy');
-
 // Plug in your Secret API Key 
 var pushyAPI = new Pushy(process.env.PUSHY_API_KEY);
 

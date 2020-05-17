@@ -10,9 +10,13 @@ let middleware = require('./utilities/middleware')
 const bodyParser = require("body-parser");
 //This allows parsing of the body of POST requests, that are encoded in JSON
 app.use(bodyParser.json())
+
 app.use('/auth', require('./routes/login.js')) 
+
 app.use('/auth', require('./routes/register.js')) 
 app.use('/verify', require('./routes/verify.js')) 
+
+app.use('/connections', require('./routes/connections.js')) 
 app.use('/auth', middleware.checkToken, require('./routes/pushyregister.js'))
 app.use('/weather', middleware.checkToken, require('./routes/weather.js'))
 app.use('/messages', middleware.checkToken, require('./routes/messages.js'))
@@ -64,4 +68,5 @@ app.use("/doc", express.static('apidoc'))
 */ 
 app.listen(process.env.PORT || 5000, () => {
     console.log("Server up and running on port: " + (process.env.PORT || 5000));
+    console.log("TEST ENVIRONMENT")
 });
