@@ -39,8 +39,9 @@ router.get("/:newPass?",(request, response, next) => {
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                console.log("THIS IS THE SALT: " + result)
-                request.salt = result.row[0].salt
+                console.log("THIS IS THE SALT: ")
+                console.log(result.rows[0].salt)
+                request.salt = result.rows[0].salt
                 next()
             } else {
                 console.log("Name not found")
@@ -51,9 +52,9 @@ router.get("/:newPass?",(request, response, next) => {
         })
         .catch(err => {
             //log the error
+            console.log(err.stack)
             console.log(values)
             console.log(theQuery)
-            console.log(err.stack)
             response.status(400).send({
                 message: err.stack
             })
