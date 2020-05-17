@@ -32,7 +32,7 @@ let config = {
  * 
  */ 
 router.get("/:newPass?",(request, response, next) => {
-    const theQuery = "SELECT salt from Members WHERE MemberId=$1"
+    const theQuery = "SELECT salt from Members WHERE email=$1"
     //let values = []
     let values = [request.decoded.email]
 
