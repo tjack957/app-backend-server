@@ -42,6 +42,7 @@ router.get("/:newPass?",(request, response, next) => {
                 request.salt = result.rowCount[0]
                 next()
             } else {
+                console.log("Name not found")
                 response.status(404).send({
                     message: "Name not found"
                 })
@@ -49,7 +50,7 @@ router.get("/:newPass?",(request, response, next) => {
         })
         .catch(err => {
             //log the error
-            // console.log(err.details)
+            console.log(err.details)
             response.status(400).send({
                 message: err.detail
             })
