@@ -55,8 +55,8 @@ router.get("/:newPass?",(request, response, next) => {
             })
         })
 }, (request, response) => {
-    let newPass = getHash(request.params.newPass, request.salt)
-    console.log("THIS IS THE NEW PASS" + request.params.newPass)
+    let newPass = getHash(request.headers['password'], request.salt)
+    console.log("THIS IS THE NEW PASS" + request.headers['password'])
     console.log("THIS IS THE SALT V2" +  request.salt)
     const theQuery = "UPDATE members set password=$1 where email=$2"
     let values = [newPass, request.decoded.email]
