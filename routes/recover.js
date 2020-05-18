@@ -49,6 +49,7 @@ router.get("/:email?",(request, response) => {
                 )
                 sendEmail2("uwnetid@uw.edu", result.rows[0].email, "Reset your password", token)
             } else {
+                console.log("Name not Found")
                 response.status(404).send({
                     message: "Name not found"
                 })
@@ -57,6 +58,7 @@ router.get("/:email?",(request, response) => {
         .catch(err => {
             //log the error
             // console.log(err.details)
+            console.log(err.stack);
             response.status(400).send({
                 message: err.detail
             })
