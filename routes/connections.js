@@ -9,7 +9,7 @@ var router = express.Router()
 router.use(require("body-parser").json())
 
 /**
- * @api {get} /connections/:sender? for all connections
+ * @api {get} /email? for all valid connections
  * @apiName GetContacts
  * @apiGroup Connections
  * 
@@ -22,7 +22,7 @@ router.use(require("body-parser").json())
  * 
  * @apiUse JSONError
  */ 
-router.get("/:email?", (request, response) => {
+router.post("/", (request, response) => {
     //perform the Select
     console.log("MADE IT")
     let query = `select Members.email
@@ -54,7 +54,7 @@ router.get("/:email?", (request, response) => {
 
 
 /**
- * @api {post} /connections/:sender? for all connections
+ * @api {post} /
  * @apiName PostContacts
  * @apiGroup Connections
  * 
@@ -67,7 +67,7 @@ router.get("/:email?", (request, response) => {
  * 
  * @apiUse JSONError
  */ 
-router.post("/", (request, response) => {
+router.put("/", (request, response) => {
     //perform the Select
     console.log("MADE IT2")
     let insert = `  Insert into
@@ -104,8 +104,8 @@ router.post("/", (request, response) => {
 });
 
 /**
- * @api {delete} /connections/:sender? for all connections
- * @apiName PostContacts
+ * @api {delete} /
+ * @apiName DeleteContacts
  * @apiGroup Connections
  * 
  * @apiDescription Request to create a new connection.
