@@ -3,10 +3,14 @@ const express = require('express')
 
 var router = express.Router()
 
+//We use this create the SHA256 hash
+const crypto = require("crypto")
+
 const bodyParser = require("body-parser")
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(bodyParser.json())
 let getHash = require('../utilities/utils').getHash 
+let sendEmail3 = require('../utilities/utils').sendEmail3
 let pool = require('../utilities/utils').pool
 let jwt = require('jsonwebtoken');
 let config = {
@@ -57,15 +61,16 @@ router.get("/:token?",(req, res, next) => {
       });
     }
   }, (request, response, next) => {
-    const theQuery = "SELECT salt from members WHERE email=$1"
+    const theQuery = "SELECT salt from Members WHERE email=$1"
     let values = [request.decoded.email]
 
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                request.salt = result.rows[0]
+                request.salt = result.rows[0].salt
                 next()
             } else {
+                console.log("Name not found")
                 response.status(404).send({
                     message: "Name not found"
                 })
@@ -73,20 +78,24 @@ router.get("/:token?",(req, res, next) => {
         })
         .catch(err => {
             //log the error
-            // console.log(err.details)
+            console.log(err.stack)
+            console.log(values)
+            console.log(theQuery)
             response.status(400).send({
-                message: err.detail
+                message: err.stack
             })
         })
 }, (request, response) => {
-    let salted_hash = getHash(password, salt)
-    const theQuery = "UPDATE members SET password=$1 WHERE email=$2"
-    let values = [request.salt, request.decoded.email]
+    let randomPass = crypto.randomBytes(8).toString("hex")
+    let newPass = getHash(randomPass, request.salt)
+    const theQuery = "UPDATE members set password=$1 where email=$2"
+    let values = [newPass, request.decoded.email]
 
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                sendEmail3("uwnetid@uw.edu", result.rows[0].email, "Reset your password", "token")
+                console.log("Worked" + result)
+                sendEmail3("me", request.decoded.email, "Your Password has been reset", randomPass)
             } else {
                 response.status(404).send({
                     message: "Name not found"

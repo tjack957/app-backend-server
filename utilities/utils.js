@@ -68,7 +68,7 @@ function sendEmail2(from, receiver, subj, message) {
       pass: process.env.PASSWORD
     }
   });
-  let verifyString = String('Your password has been reset, your temporary password is:')
+  let verifyString = String('Your password has been reset, your temporary password is:' + message)
   var mailOptions = {
     from: 'groupchatverif@gmail.com',
     to: receiver,
@@ -97,5 +97,5 @@ function getHash(pw, salt) {
 
 let messaging = require('./pushy_utilities.js')
 module.exports = {
- pool, getHash, sendEmail, sendEmail2, messaging
+ pool, getHash, sendEmail, sendEmail2,sendEmail3, messaging
 } 
