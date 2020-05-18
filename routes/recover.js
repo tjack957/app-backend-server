@@ -32,6 +32,7 @@ let config = {
  * 
  */ 
 router.get("/:email?",(request, response) => {
+    console.log("**************YOU HAVE CALLED RECOVER*****************")
     const theQuery = "SELECT email from members WHERE email=$1"
     let values = [request.params.email]
 
