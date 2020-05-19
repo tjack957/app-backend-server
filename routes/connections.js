@@ -9,13 +9,12 @@ var router = express.Router()
 router.use(require("body-parser").json())
 
 /**
- * @api {get} /email? for all valid connections
- * @apiName GetContacts
+ * @api {post} / Read all existing connections for a user
+ * @apiName PostContacts
  * @apiGroup Connections
- * 
+ * @apiHeader {String} authorization Valid JSON Web Token JWT
  * @apiDescription Reqquest to get all the valid emails in the DB.
  * 
- * @apiParam {String} sender the email to look up. 
  * @apiSuccess {String[]} String of all valid emails.
  *  
  * @apiError (400: SQL Error) {String} message the reported SQL error details
@@ -54,14 +53,13 @@ router.post("/", (request, response) => {
 
 
 /**
- * @api {post} /
- * @apiName PostContacts
+ * @api {put} / Create a new Contact for a user.
+ * @apiName PutContacts
  * @apiGroup Connections
  * 
- * @apiDescription Request to create a new connection.
- * 
- * @apiParam {String} sender the email to look up. 
- * @apiSuccess {String[]} String of all valid emails.
+ * @apiDescription Adds a connection to a user.
+ * @apiHeader {String} authorization Valid JSON Web Token JWT
+ * @apiSuccess {String[]} Message stating Create is successful.
  *  
  * @apiError (400: SQL Error) {String} message the reported SQL error details
  * 
@@ -104,13 +102,15 @@ router.put("/", (request, response) => {
 });
 
 /**
- * @api {delete} /
+ * @api {delete} / Deletes a contact for a user
  * @apiName DeleteContacts
  * @apiGroup Connections
  * 
- * @apiDescription Request to create a new connection.
+ * @apiDescription Deletes a specific contact for a user.
  * 
- * @apiParam {String} sender the email to look up. 
+ * @apiHeader {String} authorization Valid JSON Web Token JWT
+ * @apiParam {String} sender of the email to look up. 
+ * @apiParam {String} reciever of the email to look up. 
  * @apiSuccess {String[]} String of all valid emails.
  *  
  * @apiError (400: SQL Error) {String} message the reported SQL error details
