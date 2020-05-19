@@ -48,7 +48,7 @@ router.get("/:email",(request, response, next) => {
                             expiresIn: '14 days' // expires in 24 hours
                         }
                     )
-                    sendEmail("uwnetid@uw.edu", email, "Welcome!", token);
+                    sendEmail("uwnetid@uw.edu", request.params.email, "Welcome!", token);
                     res.status(201).send({
                         success: true
                     })
