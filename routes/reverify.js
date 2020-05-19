@@ -49,6 +49,9 @@ router.get("/:email",(request, response, next) => {
                         }
                     )
                     sendEmail("uwnetid@uw.edu", email, "Welcome!", token);
+                    res.status(201).send({
+                        success: true
+                    })
                 }
                 else {
                     response.status(404).send({
