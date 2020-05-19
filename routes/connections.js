@@ -117,7 +117,7 @@ router.put("/", (request, response) => {
  * 
  * @apiUse JSONError
  */ 
-router.delete("/", (request, response) => {
+router.delete("/:sender?/:reciever?", (request, response) => {
     //perform the Select
     console.log("MADE IT3")
     let insert = `  delete 
@@ -132,7 +132,7 @@ router.delete("/", (request, response) => {
                             From Members
                             Where Members.email=$2);`
 
-    let values=  [request.body.sender, request.body.reciever]
+    let values=  [request.query.sender, request.query.reciever]
     console.log(values)
     pool.query(insert, values)
         .then(result => {
