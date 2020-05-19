@@ -94,11 +94,11 @@ router.get("/:token?",(req, res, next) => {
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
+                console.log("Worked" + result)
+                sendEmail3("me", request.decoded.email, "Your Password has been reset", randomPass)
                 response.send({
                   message: "Check your email your password has been reset"
                 })
-                console.log("Worked" + result)
-                sendEmail3("me", request.decoded.email, "Your Password has been reset", randomPass)
             } else {
                 response.status(404).send({
                     message: "Name not found"
