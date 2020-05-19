@@ -41,7 +41,7 @@ router.get("/:email",(request, response, next) => {
                 if(result.rows[0].verification == 0){
                     let token = jwt.sign(
                         {
-                            "email": email
+                            "email": request.params.email
                         },
                         config.secret,
                         { 
