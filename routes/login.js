@@ -99,6 +99,13 @@ router.get('/', (request, response) => {
                         message: 'Authentication successful!',
                         token: token
                     })
+                }
+                if (ourSaltedHash === theirSaltedHash && verification === 0) {
+                    console.log("not verified")
+                    //credentials dod not match
+                    response.status(400).send({
+                        message: 'Not verified' 
+                    })   
                 } else {
                     console.log("result no match")
                     //credentials dod not match

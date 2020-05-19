@@ -25,6 +25,7 @@ app.use('/chats', middleware.checkToken, require('./routes/chats.js'))
 app.use('/changePass', middleware.checkToken, require('./routes/changePass.js'))
 app.use('/recover', require('./routes/recover.js'))
 app.use('/reset', require('./routes/reset.js'))
+app.use('/reverify', require('./routes/reverify.js'))
 
 
 /*

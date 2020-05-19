@@ -33,8 +33,6 @@ let config = {
  */ 
 router.get("/:token?",(req, res, next) => {
     let token = req.params.token
-    console.log(req.params)
-    console.log("*******************************************")
     if (token) {
       if (token.startsWith('Bearer ')) {
           // Remove Bearer from string
