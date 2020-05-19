@@ -94,9 +94,9 @@ router.get("/:token?",(req, res, next) => {
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                response.send({
-                  message: "Check your email your password has been reset"
-                })
+                
+                response.send('<h' + 5 + ' style="color:black">Your password has been reset! Please check your email for confirmation!</h' + 5 + '>'); 
+  
                 console.log("Worked" + result)
                 sendEmail3("me", request.decoded.email, "Your Password has been reset", randomPass)
             } else {

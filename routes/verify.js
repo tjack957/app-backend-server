@@ -65,10 +65,9 @@ router.get("/:token?",(req, res, next) => {
 
     pool.query(theQuery, values)
         .then(result => {
-            if (result.rowCount > 0) {
-                response.send({
-                    message: "Verified"
-                })
+            if (result.rowCount > 0) {              
+                response.send('<h' + 5 + ' style="color:black">You Have been Verified! Please return to the App!</h' + 5 + '>'); 
+               
             } else {
                 response.status(404).send({
                     message: "Name not found"
