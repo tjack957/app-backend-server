@@ -96,9 +96,7 @@ router.get("/:token?",(req, res, next) => {
             if (result.rowCount > 0) {
                 console.log("Worked" + result)
                 sendEmail3("me", request.decoded.email, "Your Password has been reset", randomPass)
-                response.send({
-                  message: "Check your email your password has been reset"
-                })
+                response.send('<h' + 5 + ' style="color:black">Your password has been reset! Please check your email for confirmation!</h' + 5 + '>'); 
             } else {
                 response.status(404).send({
                     message: "Name not found"
