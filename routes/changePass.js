@@ -71,6 +71,10 @@ router.get("/",(request, response, next) => {
         .then(result => {
             if (result.rowCount > 0) {
                 request.salt = result.rows[0].salt
+                console.log("Password changed")
+                response.status(404).send({
+                    message: "Password changed"
+                })
                 next()
             } else {
                 console.log("Name not found")
@@ -96,7 +100,7 @@ router.get("/",(request, response, next) => {
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                response.status(200).send({
+                response.send({
                     message: "Password has been changed"
                 })
                 console.log("Worked" + result)
