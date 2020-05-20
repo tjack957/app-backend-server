@@ -15,7 +15,7 @@ let config = {
 
 
 /**
- * @api {get} /reverify/:name? Request to verify all demo entries in the DB
+ * @api {get} /reverify/:email Request to verify all demo entries in the DB
  * @apiName GetReverify
  * @apiGroup Reverify
  * 

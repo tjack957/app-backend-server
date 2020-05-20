@@ -15,16 +15,13 @@ let config = {
 
 
 /**
- * @api {get} /changePass/:newPass? Request to verify all demo entries in the DB
+ * @api {get} /changePass/ Request to verify all demo entries in the DB
  * @apiName GetChangePass
  * @apiGroup ChangePass
  * 
  * @apiParam {String} newPass The new password
  * 
- * @apiSuccess {boolean} success true when the name is verified
- * @apiSuccess {Object[]} names List of names in the Demo DB
- * @apiSuccess {String} names.name The name
- * @apiSuccess {String} names.message The message asscociated with the name
+ * @apiSuccess {boolean} Password has been changed
  * 
  * @apiError (404: Name Not Found) {String} message "Name not found"
  * @apiError (400: SQL Error) {String} message the reported SQL error details
@@ -99,6 +96,9 @@ router.get("/",(request, response, next) => {
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
+                response.send({
+                    message: "Password has been changed"
+                })
                 console.log("Worked" + result)
             } else {
                 response.status(404).send({

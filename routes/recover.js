@@ -6,7 +6,7 @@ var router = express.Router()
 const bodyParser = require("body-parser")
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(bodyParser.json())
-let sendEmail2 = require('../utilities/utils').sendEmail2
+let sendEmail = require('../utilities/utils').sendEmailConfirm
 let pool = require('../utilities/utils').pool
 let jwt = require('jsonwebtoken');
 let config = {
@@ -15,16 +15,13 @@ let config = {
 
 
 /**
- * @api {get} /recover/:email? Request to verify all demo entries in the DB
+ * @api {get} /recover/:email? Request to recover the account of the email provided
  * @apiName GetVerify
  * @apiGroup Verify
  * 
  * @apiParam {String} email The email the recovery code will be sent to
  * 
  * @apiSuccess {boolean} success true when the name is verified
- * @apiSuccess {Object[]} names List of names in the Demo DB
- * @apiSuccess {String} names.name The name
- * @apiSuccess {String} names.message The message asscociated with the name
  * 
  * @apiError (404: Name Not Found) {String} message "Name not found"
  * @apiError (400: SQL Error) {String} message the reported SQL error details
@@ -48,7 +45,7 @@ router.get("/:email?",(request, response) => {
                         expiresIn: '14 days' // expires in 24 hours
                     }
                 )
-                sendEmail2("uwnetid@uw.edu", result.rows[0].email, "Reset your password", token)
+                sendEmail("uwnetid@uw.edu", result.rows[0].email, "Reset your password", token)
                 response.send({message: "worked"})
             } else {
                 console.log("Name not Found")

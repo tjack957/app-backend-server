@@ -31,7 +31,7 @@ function sendEmail(from, receiver, subj, message) {
  });
 }
 
-function sendEmail2(from, receiver, subj, message) {
+function sendEmailConfirm(from, receiver, subj, message) {
   var nodemailer = require('nodemailer');
  
   var transporter = nodemailer.createTransport({
@@ -58,7 +58,7 @@ function sendEmail2(from, receiver, subj, message) {
   });
  }
 
- function sendEmail3(from, receiver, subj, message) {
+ function sendEmailReset(from, receiver, subj, message) {
   var nodemailer = require('nodemailer');
  
   var transporter = nodemailer.createTransport({
@@ -97,5 +97,5 @@ function getHash(pw, salt) {
 
 let messaging = require('./pushy_utilities.js')
 module.exports = {
- pool, getHash, sendEmail, sendEmail2,sendEmail3, messaging
+ pool, getHash, sendEmail, sendEmailConfirm,sendEmailReset, messaging
 } 

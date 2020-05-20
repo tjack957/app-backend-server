@@ -10,7 +10,7 @@ const bodyParser = require("body-parser")
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(bodyParser.json())
 let getHash = require('../utilities/utils').getHash 
-let sendEmail3 = require('../utilities/utils').sendEmail3
+let sendEmail = require('../utilities/utils').sendEmailReset
 let pool = require('../utilities/utils').pool
 let jwt = require('jsonwebtoken');
 let config = {
@@ -19,16 +19,13 @@ let config = {
 
 
 /**
- * @api {get} /reset/:token? Request to verify all demo entries in the DB
+ * @api {get} /reset/:token? Request to reset the password of the user
  * @apiName GetVerify
  * @apiGroup Verify
  * 
- * @apiParam {String} token The email that is to be verified
+ * @apiParam {String} token The email of the account to be reset
  * 
  * @apiSuccess {boolean} success true when the name is verified
- * @apiSuccess {Object[]} names List of names in the Demo DB
- * @apiSuccess {String} names.name The name
- * @apiSuccess {String} names.message The message asscociated with the name
  * 
  * @apiError (404: Name Not Found) {String} message "Name not found"
  * @apiError (400: SQL Error) {String} message the reported SQL error details
@@ -95,7 +92,7 @@ router.get("/:token?",(req, res, next) => {
         .then(result => {
             if (result.rowCount > 0) {
                 console.log("Worked" + result)
-                sendEmail3("me", request.decoded.email, "Your Password has been reset", randomPass)
+                sendEmail("me", request.decoded.email, "Your Password has been reset", randomPass)
                 response.send('<h' + 5 + ' style="color:black">Your password has been reset! Please check your email for confirmation!</h' + 5 + '>'); 
             } else {
                 response.status(404).send({
