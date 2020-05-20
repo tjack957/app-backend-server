@@ -96,7 +96,7 @@ router.get("/",(request, response, next) => {
     pool.query(theQuery, values)
         .then(result => {
             if (result.rowCount > 0) {
-                response.send({
+                response.status(200).send({
                     message: "Password has been changed"
                 })
                 console.log("Worked" + result)
