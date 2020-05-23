@@ -136,9 +136,17 @@ router.delete("/:sender?/:reciever?", (request, response) => {
     console.log(values)
     pool.query(insert, values)
         .then(result => {
-            response.send({
-                message: "DELETE SUCCESS!"            
-            })
+            if(result.rowCount > 0){
+                response.send({
+                 message: "DELETE SUCCESS!"            
+                }) 
+            }
+            else {
+                response.status(400).send({
+                    message: "No such connection found"            
+                   }) 
+            }
+            
         }).catch(err => {
             response.status(400).send({
                 message: "SQL Error",
