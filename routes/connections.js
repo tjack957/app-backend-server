@@ -132,7 +132,7 @@ router.delete("/:sender?/:reciever?", (request, response) => {
                             From Members
                             Where Members.email=$2);`
 
-    let values=  [request.query.sender, request.query.reciever]
+    let values=  [request.params.sender, request.params.reciever]
     console.log(values)
     pool.query(insert, values)
         .then(result => {
