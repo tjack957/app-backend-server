@@ -36,7 +36,7 @@ router.post("/", (request, response) => {
                 From Members
                 Where Members.email=$1))`
 
-    let values=  [request.body.email]
+    let values=  [request.decoded.email]
     console.log(values)
     pool.query(query, values)
         .then(result => {
@@ -65,7 +65,7 @@ router.post("/", (request, response) => {
  * 
  * @apiUse JSONError
  */ 
-router.put("/", (request, response) => {
+router.put("/:reciever", (request, response) => {
     //perform the Select
     console.log("MADE IT2")
     let insert = `  Insert into
@@ -86,7 +86,7 @@ router.put("/", (request, response) => {
                         From Members
                         Where Members.email=$2));`
 
-    let values=  [request.body.sender, request.body.reciever]
+    let values=  [request.decoded.email, request.params.reciever]
     console.log(values)
     pool.query(insert, values)
         .then(result => {
@@ -117,7 +117,7 @@ router.put("/", (request, response) => {
  * 
  * @apiUse JSONError
  */ 
-router.delete("/:sender?/:reciever?", (request, response) => {
+router.delete("/:reciever", (request, response) => {
     //perform the Select
     console.log("MADE IT3")
     let insert = `  delete 
@@ -132,7 +132,7 @@ router.delete("/:sender?/:reciever?", (request, response) => {
                             From Members
                             Where Members.email=$2);`
 
-    let values=  [request.params.sender, request.params.reciever]
+    let values=  [request.decoded.email, request.params.reciever]
     console.log(values)
     pool.query(insert, values)
         .then(result => {
