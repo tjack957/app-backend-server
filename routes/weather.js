@@ -68,7 +68,7 @@ router.get("/latlon", (req, res) => {
 
     console.log(req.decoded)
    
-    let url = `api.openweathermap.org/data/2.5/weather?lat=?&lon=?&appid=${API_KEY}`
+    let url = `api.openweathermap.org/data/2.5/weather?appid=${API_KEY}`
  
     //find the query string (parameters) sent to this end point and pass them on to
     // openweathermap api call 
