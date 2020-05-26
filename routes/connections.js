@@ -36,7 +36,7 @@ router.post("/", (request, response) => {
                 From Members
                 Where Members.email=$1))`
 
-    let values=  [request.body.email]
+    let values=  [request.decoded.email]
     console.log(values)
     pool.query(query, values)
         .then(result => {
@@ -65,7 +65,7 @@ router.post("/", (request, response) => {
  * 
  * @apiUse JSONError
  */ 
-router.put("/", (request, response) => {
+router.put("/:reciever", (request, response) => {
     //perform the Select
     console.log("MADE IT2")
     let insert = `  Insert into
@@ -86,7 +86,7 @@ router.put("/", (request, response) => {
                         From Members
                         Where Members.email=$2));`
 
-    let values=  [request.body.sender, request.body.reciever]
+    let values=  [request.decoded.email, request.params.reciever]
     console.log(values)
     pool.query(insert, values)
         .then(result => {
@@ -117,7 +117,7 @@ router.put("/", (request, response) => {
  * 
  * @apiUse JSONError
  */ 
-router.delete("/:sender?/:reciever?", (request, response) => {
+router.delete("/:reciever", (request, response) => {
     //perform the Select
     console.log("MADE IT3")
     let insert = `  delete 
@@ -132,13 +132,21 @@ router.delete("/:sender?/:reciever?", (request, response) => {
                             From Members
                             Where Members.email=$2);`
 
-    let values=  [request.query.sender, request.query.reciever]
+    let values=  [request.decoded.email, request.params.reciever]
     console.log(values)
     pool.query(insert, values)
         .then(result => {
-            response.send({
-                message: "DELETE SUCCESS!"            
-            })
+            if(result.rowCount > 0){
+                response.send({
+                 message: "DELETE SUCCESS!"            
+                }) 
+            }
+            else {
+                response.status(400).send({
+                    message: "No such connection found"            
+                   }) 
+            }
+            
         }).catch(err => {
             response.status(400).send({
                 message: "SQL Error",
