@@ -9,6 +9,43 @@ var router = express.Router()
 router.use(require("body-parser").json())
 
 /**
+ * @api {get} / Search for usernames with a similar name to that provided
+ * @apiName GetContacts
+ * @apiGroup Connections
+ * @apiHeader {String} authorization Valid JSON Web Token JWT
+ * @apiDescription Reqquest to get all the valid emails in the DB.
+ * 
+ * @apiSuccess {String[]} String of all valid emails.
+ *  
+ * @apiError (400: SQL Error) {String} message the reported SQL error details
+ * 
+ * @apiUse JSONError
+ */ 
+router.get("/:toSearch", (request, response) => {
+    //perform the Select
+    console.log("MADE IT")
+    let query = `select username from members where username like $1 or firstname like $1`
+    let val = "%"+request.params.toSearch+"%"
+    let values=  [val]
+    console.log(values)
+    pool.query(query, values)
+        .then(result => {
+            response.send({
+                email: result.rows                
+            })
+        }).catch(err => {
+            response.status(400).send({
+                message: "SQL Error",
+                error: err
+            })
+        })
+});
+
+
+
+
+
+/**
  * @api {post} / Read all existing connections for a user
  * @apiName PostContacts
  * @apiGroup Connections
