@@ -26,8 +26,8 @@ var router = express.Router()
 router.post("/current", (req, res) => {
 
     console.log(req.decoded)
-    let query = req.query.search;
-    let url = `https://api.openweathermap.org/data/2.5/weather?zip=` + query + `${COUNTRY_CODE}&appid=${API_KEY}`
+    //let query = req.query.search;
+    let url = `https://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}`
     
     //find the query string (parameters) sent to this end point and pass them on to
     // openweathermap api call 
