@@ -3,13 +3,13 @@ const express = require('express')
 
 //Access the connection to Heroku Database
 let pool = require('../utilities/utils').pool
-
+let msg_functions = require('../utilities/utils').messaging
 var router = express.Router()
 //This allows parsing of the body of POST requests, that are encoded in JSON
 router.use(require("body-parser").json())
 
 /**
- * @api {put} / Approves and incoming request
+ * @api {put} / Approves an incoming request
  * @apiName PutContacts
  * @apiGroup Connections
  * 
@@ -79,7 +79,7 @@ router.put("/:reciever", (request, response, next) => {
                 error: err
             })
         })
-}, (request, response) => {
+}, (request, response, next) => {
     let insert = `  UPDATE contacts SET verified =1 where memberid_a=
                     (Select
 	                    Members.MemberID
@@ -96,12 +96,41 @@ router.put("/:reciever", (request, response, next) => {
         .then(result => {
             if(result.rowCount > 0){
                 console.log("updated")
-                response.send({
-                    message: "INSERT SUCCESS!"            
-                })
+                next()
             }
             else {
                 console.log("not updated");
+                response.status(400).send({
+                    message: "UPDATE FAILED"
+                })
+            }
+            
+        }).catch(err => {
+            response.status(400).send({
+                message: "SQL Error",
+                error: err
+            })
+        })
+}, (request, response) => {
+    let insert = ` Select token from push_token where memberid =
+                        (
+                            select members.memberid
+                            from members
+                            where members.email=$1
+                        );`
+
+    let values=  [request.params.reciever]
+    pool.query(insert, values)
+        .then(result => {
+            if(result.rowCount > 0){
+                msg_functions.sendAccept(result.rows[0].token, request.decoded.email);
+                console.log("message sent")
+                response.send({
+                    message:"Success"
+                })
+            }
+            else {
+                console.log("not sent");
                 response.status(400).send({
                     message: "UPDATE FAILED"
                 })
@@ -132,7 +161,7 @@ router.put("/:reciever", (request, response, next) => {
  * 
  * @apiUse JSONError
  */ 
-router.delete("/:reciever", (request, response) => {
+router.delete("/:reciever", (request, response, next) => {
     let insert = `  delete 
                     from contacts
                     where   contacts.memberid_a =
@@ -151,14 +180,43 @@ router.delete("/:reciever", (request, response) => {
     pool.query(insert, values)
         .then(result => {
             if(result.rowCount > 0){
-                response.send({
-                    message: "DELETE SUCCESS!"            
-                })
+                next()
             }
             else {
                 response.status(400).send({
                     message: "No such connection found"            
                    }) 
+            }
+            
+        }).catch(err => {
+            response.status(400).send({
+                message: "SQL Error",
+                error: err
+            })
+        })
+},  (request, response) => {
+    let insert = ` Select token from push_token where memberid =
+                        (
+                            select members.memberid
+                            from members
+                            where members.email=$1
+                        );`
+
+    let values=  [request.params.reciever]
+    pool.query(insert, values)
+        .then(result => {
+            if(result.rowCount > 0){
+                msg_functions.sendDecline(result.rows[0].token, request.decoded.email);
+                console.log("message sent")
+                response.send({
+                    message:"Success"
+                })
+            }
+            else {
+                console.log("not sent");
+                response.status(400).send({
+                    message: "UPDATE FAILED"
+                })
             }
             
         }).catch(err => {
