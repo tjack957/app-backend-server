@@ -59,12 +59,12 @@ router.put("/:reciever", (request, response, next) => {
                     (Select
 	                    Members.MemberID
                         From Members
-                        Where Members.Email=$2),
+                        Where Members.Email=$1),
 
                     (SELECT
                         Members.MemberID
                         From Members
-                        Where Members.Email=$1),
+                        Where Members.Email=$2),
 
                     1);`
 
