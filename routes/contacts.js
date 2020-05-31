@@ -27,12 +27,12 @@ router.put("/:reciever", (request, response, next) => {
                     (Select
 	                    Members.MemberID
                         From Members
-                        Where Members.Email=$1) AND
+                        Where Members.Email=$2) AND
                     memberid_b =
                     (SELECT
                         Members.MemberID
                         From Members
-                        Where Members.Email=$2) AND
+                        Where Members.Email=$1) AND
                     verified = 0;`
 
     let values=  [request.decoded.email, request.params.reciever]
@@ -84,20 +84,29 @@ router.put("/:reciever", (request, response, next) => {
                     (Select
 	                    Members.MemberID
                         From Members
-                        Where Members.Email=$1)
+                        Where Members.Email=$2)
                     AND memberid_b =
                     (SELECT
                         Members.MemberID
                         From Members
-                        Where Members.Email=$2);`
+                        Where Members.Email=$1);`
 
     let values=  [request.decoded.email, request.params.reciever]
     pool.query(insert, values)
         .then(result => {
-            console.log("updated")
-            response.send({
-                message: "INSERT SUCCESS!"            
-            })
+            if(result.rowCount > 0){
+                console.log("updated")
+                response.send({
+                    message: "INSERT SUCCESS!"            
+                })
+            }
+            else {
+                console.log("not updated");
+                response.status(400).send({
+                    message: "UPDATE FAILED"
+                })
+            }
+            
         }).catch(err => {
             response.status(400).send({
                 message: "SQL Error",
