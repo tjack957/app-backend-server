@@ -138,12 +138,12 @@ router.delete("/:reciever", (request, response) => {
                     where   contacts.memberid_a =
                             (select Members.memberid
                             From Members
-                            Where Members.email=$1)
+                            Where Members.email=$2)
                     AND
                             contacts.memberid_b = 
                             (select Members.memberid
                             From Members
-                            Where Members.email=$2)
+                            Where Members.email=$1)
                     AND
                             verified = 0;`
 
