@@ -22,8 +22,6 @@ router.use(require("body-parser").json())
  * @apiUse JSONError
  */ 
 router.get("/:toSearch", (request, response) => {
-    //perform the Select
-    console.log("MADE IT")
     let query = `select username from members where username like $1 or firstname like $1`
     let val = "%"+request.params.toSearch+"%"
     let values=  [val]
@@ -71,7 +69,7 @@ router.post("/", (request, response) => {
 
                 (select Members.memberid
                 From Members
-                Where Members.email=$1))`
+                Where Members.email=$1) and verified = 1)`
 
     let values=  [request.decoded.email]
     console.log(values)
@@ -104,7 +102,6 @@ router.post("/", (request, response) => {
  */ 
 router.put("/:reciever", (request, response) => {
     //perform the Select
-    console.log("MADE IT2")
     let insert = `  Insert into
 	                Contacts(MemberID_A, MemberID_B, Verified)
                     VALUES(
@@ -118,13 +115,9 @@ router.put("/:reciever", (request, response) => {
                         From Members
                         Where Members.Email=$2),
 
-                    (SELECT
-                        Members.verification
-                        From Members
-                        Where Members.email=$2));`
+                    0);`
 
     let values=  [request.decoded.email, request.params.reciever]
-    console.log(values)
     pool.query(insert, values)
         .then(result => {
             response.send({
@@ -154,9 +147,8 @@ router.put("/:reciever", (request, response) => {
  * 
  * @apiUse JSONError
  */ 
-router.delete("/:reciever", (request, response) => {
+router.delete("/:reciever", (request, response, next) => {
     //perform the Select
-    console.log("MADE IT3")
     let insert = `  delete 
                     from contacts
                     where   contacts.memberid_a =
@@ -170,13 +162,44 @@ router.delete("/:reciever", (request, response) => {
                             Where Members.email=$2);`
 
     let values=  [request.decoded.email, request.params.reciever]
-    console.log(values)
+    pool.query(insert, values)
+        .then(result => {
+            if(result.rowCount > 0){
+                next()
+            }
+            else {
+                response.status(400).send({
+                    message: "No such connection found"            
+                   }) 
+            }
+            
+        }).catch(err => {
+            response.status(400).send({
+                message: "SQL Error",
+                error: err
+            })
+        })
+},(request, response) => {
+    //perform the Select
+    let insert = `  delete 
+                    from contacts
+                    where   contacts.memberid_a =
+                            (select Members.memberid
+                            From Members
+                            Where Members.email=$2)
+                    AND
+                            contacts.memberid_b = 
+                            (select Members.memberid
+                            From Members
+                            Where Members.email=$1);`
+
+    let values=  [request.decoded.email, request.params.reciever]
     pool.query(insert, values)
         .then(result => {
             if(result.rowCount > 0){
                 response.send({
                  message: "DELETE SUCCESS!"            
-                }) 
+                })
             }
             else {
                 response.status(400).send({

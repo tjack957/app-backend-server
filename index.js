@@ -17,6 +17,7 @@ app.use('/auth', require('./routes/register.js'))
 app.use('/verify', require('./routes/verify.js')) 
 
 app.use('/connections',middleware.checkToken, require('./routes/connections.js')) 
+app.use('/contacts',middleware.checkToken, require('./routes/contacts.js')) 
 app.use('/auth', middleware.checkToken, require('./routes/pushyregister.js'))
 app.use('/weather', middleware.checkToken, require('./routes/weather.js'))
 app.use('/messages', middleware.checkToken, require('./routes/messages.js'))
