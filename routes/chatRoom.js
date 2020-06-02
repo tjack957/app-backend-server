@@ -27,7 +27,10 @@ router.use(require("body-parser").json())
  */ 
 router.get("/", (request, response) => {
 
-    let insert = `select name from chats where chatid in (select chatid from chatmembers where memberid=$1)`
+    let insert = `select name from chats where
+                    chatid in
+                    (select chatid from chatmembers where memberid=$1) and not chatid in
+                    (select chatid from chatactive)`
     console.log(request.query)
     let values = [request.decoded.memberid]
     pool.query(insert, values)
@@ -63,9 +66,7 @@ router.get("/", (request, response) => {
  */ 
 router.delete("/:chatid?", (request, response) => {
 
-    let insert = `  Delete from chats
-                    where chats.chatid=$1`
-    console.log(request.query)
+    let insert = `  Insert into ChatActive(chatid, activeid) values ($1,0)`
     let values = [request.query.chatid]
     pool.query(insert, values)
         .then(result => {
