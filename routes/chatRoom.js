@@ -66,7 +66,7 @@ router.get("/", (request, response) => {
 router.delete("/:chatid?", (request, response) => {
 
     let insert = `  Insert into ChatActive(chatid, activeid) values ($1,0)`
-    let values = [request.query.chatid]
+    let values = [request.params.chatid]
     pool.query(insert, values)
         .then(result => {
             response.send({
