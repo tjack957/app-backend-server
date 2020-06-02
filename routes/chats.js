@@ -116,14 +116,14 @@ router.put("/:chatId?/:email?", (request, response, next) => {
             }
         }).catch(error => {
             response.status(400).send({
-                message: "SQL Error",
+                message: "SQL Error2",
                 error: error
             })
         })
         //code here based on the results of the query
 }, (request, response, next) => {
     //validate email exists 
-    let query = 'SELECT * FROM Members WHERE MemberId=$1'
+    let query = 'SELECT * FROM Members WHERE email=$1'
     let values = [request.params.email]
 
     pool.query(query, values)
@@ -138,13 +138,33 @@ router.put("/:chatId?/:email?", (request, response, next) => {
             }
         }).catch(error => {
             response.status(400).send({
-                message: "SQL Error",
+                message: "SQL Error3",
                 error: error
             })
         })
-}, (request, response, next) => {
+},(request, response, next) => {
+    let query = 'SELECT memberid from members where email=$1'
+    let values = [request.params.email]
+
+    pool.query(query, values)
+        .then(result => {
+            if (result.rowCount == 0) {
+                response.status(404).send({
+                    message: "Chat ID not found"
+                })
+            } else {
+                request.memberid = result.rows[0];
+                next()
+            }
+        }).catch(error => {
+            response.status(400).send({
+                message: "SQL Error1",
+                error: error
+            })
+        })
+},(request, response, next) => {
         //validate email does not already exist in the chat
-        let query = 'SELECT * FROM ChatMembers WHERE ChatId=$1 AND MemberId=$2'
+        let query = 'SELECT * FROM ChatMembers WHERE ChatId=$1 AND MemberId=(select memberid from members where email = $2)'
         let values = [request.params.chatId, request.params.email]
     
         pool.query(query, values)
@@ -158,7 +178,7 @@ router.put("/:chatId?/:email?", (request, response, next) => {
                 }
             }).catch(error => {
                 response.status(400).send({
-                    message: "SQL Error",
+                    message: "SQL Error4",
                     error: error
                 })
             })
@@ -166,7 +186,7 @@ router.put("/:chatId?/:email?", (request, response, next) => {
 }, (request, response) => {
     //Insert the memberId into the chat
     let insert = `INSERT INTO ChatMembers(ChatId, MemberId)
-                  VALUES ($1, $2)
+                  VALUES ($1, (select memberid from members where email = $2))
                   RETURNING *`
     let values = [request.params.chatId, request.params.email]
     pool.query(insert, values)
@@ -176,7 +196,7 @@ router.put("/:chatId?/:email?", (request, response, next) => {
             })
         }).catch(err => {
             response.status(400).send({
-                message: "SQL Error",
+                message: "SQL Error5",
                 error: err
             })
         })
