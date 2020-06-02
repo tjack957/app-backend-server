@@ -27,10 +27,9 @@ router.use(require("body-parser").json())
  */ 
 router.get("/", (request, response) => {
 
-    let insert = `select chats.name from chats`
+    let insert = `select name from chats where chatid in (select chatid from chatmembers where memberid=$1)`
     console.log(request.query)
-    let values = null
-    //let values = [request.query]
+    let values = [request.decoded.memberid]
     pool.query(insert, values)
         .then(result => {
             console.log(result)
