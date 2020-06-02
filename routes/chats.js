@@ -35,8 +35,8 @@ router.use(require("body-parser").json())
  * 
  * @apiUse JSONError
  */ 
-router.post("/:name?", (request, response, next) => {
-    if (!request.params.name) {
+router.post("/", (request, response, next) => {
+    if (!request.body.name) {
         response.status(400).send({
             message: "Missing required information"
         })
@@ -48,7 +48,7 @@ router.post("/:name?", (request, response, next) => {
     let insert = `INSERT INTO Chats(Name)
                   VALUES ($1)
                   RETURNING ChatId`
-    let values = [request.params.name]
+    let values = [request.body.name]
     pool.query(insert, values)
         .then(result => {
             response.send({
