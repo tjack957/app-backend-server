@@ -36,7 +36,7 @@ router.use(require("body-parser").json())
  * @apiUse JSONError
  */ 
 router.post("/:name?", (request, response, next) => {
-    if (request.params.name) {
+    if (!request.params.name) {
         response.status(400).send({
             message: "Missing required information"
         })
