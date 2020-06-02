@@ -27,7 +27,7 @@ router.use(require("body-parser").json())
  */ 
 router.get("/", (request, response) => {
 
-    let insert = `select name from chats where
+    let insert = `select * from chats where
                     chatid in
                     (select chatid from chatmembers where memberid=$1) and not chatid in
                     (select chatid from chatactive)`
@@ -37,8 +37,7 @@ router.get("/", (request, response) => {
         .then(result => {
             console.log(result)
             response.send({
-               rowCount: result.rowCount,
-               rows: result.rows
+               rows:result.rows
             })
         }).catch(err => {
             response.status(400).send({
