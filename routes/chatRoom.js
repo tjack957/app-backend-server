@@ -116,4 +116,37 @@ router.put("/", (request, response) => {
         })
 })
 
+/**
+ * @api {post} /Get the users in your friendlist that are not in the chatroom
+ * @apiName PostChatRoom
+ * @apiGroup ChatRoom
+ * 
+ * @apiHeader {String} authorization Valid JSON Web Token JWT
+ * 
+ * @apiSuccess (Success 201) {boolean} success true when the list is returned
+ *   
+ * @apiError (400: SQL Error) {String} message the reported SQL error details
+ * 
+ * 
+ * @apiUse JSONError
+ */ 
+router.put("/:chatid", (request, response) => {
+
+    let insert = ` select memberid_b from contacts where memberid_a=$1 and memberid_b not in (select memberid from chatmembers where chatid=37);`
+    console.log(request.body)
+    let values = [request.decoded.memberid, request.params.chatid]
+    pool.query(insert, values)
+        .then(result => {
+            response.send({
+                message: "Chat Room Updated"
+            })
+        }).catch(err => {
+            response.status(400).send({
+                message: "SQL Error",
+                error: err
+            })
+
+        })
+})
+
 module.exports = router
