@@ -262,8 +262,8 @@ router.get("/:chatId?", (request, response, next) => {
         let query = `SELECT Members.Email 
                     FROM ChatMembers
                     INNER JOIN Members ON ChatMembers.MemberId=Members.MemberId
-                    WHERE ChatId=$1`
-        let values = [request.params.chatId]
+                    WHERE ChatId=$1 and not chatmembers.memberid=$2`
+        let values = [request.params.chatId, request.decoded.memberid]
         pool.query(query, values)
             .then(result => {
                 response.send({
