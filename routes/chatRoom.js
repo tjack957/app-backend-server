@@ -138,7 +138,7 @@ router.post("/:chatid", (request, response) => {
     pool.query(insert, values)
         .then(result => {
             response.send({
-                message: "Chat Room Updated"
+                rows: result.rows
             })
         }).catch(err => {
             response.status(400).send({
