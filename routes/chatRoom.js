@@ -130,7 +130,7 @@ router.put("/", (request, response) => {
  * 
  * @apiUse JSONError
  */ 
-router.put("/:chatid", (request, response) => {
+router.post("/:chatid", (request, response) => {
 
     let insert = ` select memberid_b from contacts where memberid_a=$1 and memberid_b not in (select memberid from chatmembers where chatid=37);`
     console.log(request.body)
