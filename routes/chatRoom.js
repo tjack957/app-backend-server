@@ -132,7 +132,7 @@ router.put("/", (request, response) => {
  */ 
 router.post("/:chatid", (request, response) => {
 
-    let insert = ` select memberid_b from contacts where memberid_a=$1 and memberid_b not in (select memberid from chatmembers where chatid=37) and verified = 1;`
+    let insert = ` select memberid_b from contacts where memberid_a=$1 and memberid_b not in (select memberid from chatmembers where chatid=$2) and verified = 1;`
     console.log(request.body)
     let values = [request.decoded.memberid, request.params.chatid]
     pool.query(insert, values)
